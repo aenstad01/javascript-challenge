@@ -6,20 +6,16 @@ var tbody = d3.select("tbody");
 
 
 
-
-// Create a function to fix stray HTML characters
-function fixTypos(x) {
-    return [x.replace("&#39", "'"),
-    x.replace("&#34", "'"),
-    x.replace("&#33", "!")];
+function decodeHtml(html) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
 }
 
 var typo = "It&#39s a beautiful day in the &#34neighborhood&#34 &#33";
-var fixed = fixTypos(typo);
+var fixed = decodeHtml(typo);
 
 console.log(fixed);
-
-
 
 
 
