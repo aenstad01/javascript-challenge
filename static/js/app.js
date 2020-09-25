@@ -4,15 +4,12 @@ var tableData = data;
 // Create a variable for the table body
 var tbody = d3.select("tbody");
 
-
-
 // Function to fix typos (need to add to loop)
 function decodeHtml(html) {
     var txt = document.createElement("textarea");
     txt.innerHTML = html;
     return txt.value;
 }
-
 
 // Use forEach to loop through all tableData and insert the data into the table
 tableData.forEach(function(sighting) {
@@ -27,7 +24,6 @@ tableData.forEach(function(sighting) {
     });
 });
 
-
 // Select the button
 var button = d3.select("#filter-btn");
 
@@ -38,8 +34,7 @@ var inputState = d3.select("#state");
 var inputCountry = d3.select("#country");
 var inputShape = d3.select("#shape");
 
-
-
+var filters = {};
 
 // Complete the event handler function for the form
 function runEnter() {
@@ -49,25 +44,29 @@ function runEnter() {
     // Prevent the page from refreshing
     d3.event.preventDefault();
 
-
     // Get the value property of the input element
-      var inputValue = inputDate.property("value")
-
-    // if (inputDate.property("value").length > 0) {
-    //     var inputValue = inputDate.property("value");
-    // }
-    // else {
-    //     var inputValue = "x";
-    // }
-
+    var dateInput = inputDate.property("value");
     var cityInput = inputCity.property("value");
+    var stateInput = inputState.property("value");
+    var countryInput = inputCountry.property("value");
+    var shapeInput = inputShape.property("value");
+
+    // Send data to the filters variable
+    filters.date = dateInput;
+    filters.city = cityInput;
+    filters.state = stateInput;
+    filters.country = countryInput;
+    filters.shape = shapeInput;
+
+    console.log(filters);
 
 
-    var filteredData = tableData.filter(sighting => 
-        (sighting.datetime === inputValue)
-        ||
-        (sighting.city === cityInput)
-        );
+
+    // var filteredData = tableData.filter(sighting => 
+    //     (sighting.datetime === dateInput)
+    //     ||
+    //     (sighting.city === cityInput)
+    //     );
 
         
     filteredData.forEach(function(sighting) {
