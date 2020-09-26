@@ -24,19 +24,10 @@ tableData.forEach(function(sighting) {
     });
 });
 
-// Select the button
-var button = d3.select("#filter-btn");
+var button = d3.selectAll(".filter");
 
-// Select the input elements in the filter box
-var inputDate = d3.select("#datetime");
-var inputCity = d3.select("#city");
-var inputState = d3.select("#state");
-var inputCountry = d3.select("#country");
-var inputShape = d3.select("#shape");
+var filters = {}
 
-var filters = {};
-
-// Complete the event handler function for the form
 function runEnter() {
 
     tbody.html("");
@@ -44,36 +35,28 @@ function runEnter() {
     // Prevent the page from refreshing
     d3.event.preventDefault();
 
-    // Get the value property of the input element
-    var dateInput = inputDate.property("value");
-    var cityInput = inputCity.property("value");
-    var stateInput = inputState.property("value");
-    var countryInput = inputCountry.property("value");
-    var shapeInput = inputShape.property("value");
+    // select only the element that was changed
+    var inputSelection = d3.select(this).select("input");
 
-    // Send data to the filters variable
-    filters.date = dateInput;
-    filters.city = cityInput;
-    filters.state = stateInput;
-    filters.country = countryInput;
-    filters.shape = shapeInput;
+    var inputId = inputSelection.attr("id");
+    
+    var inputValue = inputSelection.property("value");
 
-    console.log(filters);
+    filters[inputId] = inputValue;
 
+    var newData = tableData;
 
+    // filter by filters object
+    Object.entries(filters).forEach(function([key, value]) {
 
-    // var filteredData = tableData.filter(sighting => 
-    //     (sighting.datetime === dateInput)
-    //     ||
-    //     (sighting.city === cityInput)
-    //     );
+        newData = newData.filter(x => x[key] === value);
+        console.log(newData);
+    });        
 
-        
-    filteredData.forEach(function(sighting) {
-            // Create a new table row for each UFO sighting
+    newData.forEach(function(sighting) {
             var row = tbody.append("tr");
 
-            // Update that row with the data for that UFO sighting
+            // Update the row with the data for that UFO sighting
             Object.entries(sighting).forEach(function([key, value]) {
                     var cell = row.append("td");
                     cell.text(value);
@@ -82,15 +65,4 @@ function runEnter() {
     });
 };
 
-// When the button is clicked, run the runEnter function
-button.on("click", runEnter);
-inputDate.on("change", runEnter);
-inputCity.on("change", runEnter);
-inputState.on("change", runEnter);
-inputCountry.on("change", runEnter);
-inputShape.on("change", runEnter);
-
-
-
-
- 
+button.on("change", runEnter);
